@@ -8,9 +8,10 @@ you spot and fix both?
 There are two major issues in this code that lead to sub-60fps performance.
 Another issue is about layout that affects the browser performance.
 
-Issue 1: line 456
-Issue 2: line 513
-Issue 2: line 519
+Issue 1: line 460
+Issue 2: line 517
+Issue 3: line 523
+Issue 4: line 545
 
 Built into the code, you'll find a few instances of the User Timing API
 (window.performance), which will be console.log()ing frame rate data into the
@@ -384,7 +385,7 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
   pizzaImageContainer.classList.add("col-md-6");
 
-  pizzaImage.src = "images/pizza.png";
+  pizzaImage.src = "img/pizza.png";
   pizzaImage.classList.add("img-responsive");
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
@@ -541,10 +542,13 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+// Optimization 4:Reduce the loop from 200 times to 20 times.
+  var rows = Math.floor(window.innerHeight / s) + 1;
+// for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < cols*rows; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
-    elem.src = "images/pizza.png";
+    elem.src = "img/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
