@@ -1,0 +1,36 @@
+{
+  "name": "Udacity-P4-Website-Optimization",
+  "version": "1.0.0",
+  "description": "Website performance",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hitwater/Udacity-P4-Website-Optimization.git"
+  },
+  "keywords": [
+    "performance"
+  ],
+  "author": "gm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hitwater/Udacity-P4-Website-Optimization/issues"
+  },
+  "homepage": "https://github.com/hitwater/Udacity-P4-Website-Optimization#readme",
+  "devDependencies": {
+    "browser-sync": "^2.12.5",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-exit": "0.0.2",
+    "gulp-image-optimization": "^0.1.3",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-html-minify": "^1.0.4",
+    "gulp-open": "^1.0.0",
+    "gulp-uglify": "^1.5.3",
+    "ngrok": "0.1.99",
+    "psi": "^2.0.2",
+    "run-sequence": "^1.1.5"
+  }
+}
