@@ -22,14 +22,12 @@ Run `gulp psi` to perform PageSpeed test for index.html and see the test results
 
 ### Part 2: Optimize pizza.html renders with a consistent frame-rate at 60fps when scrolling.
 
-- **Reduce the number of moving pizzas**
+- **Use fast methods to access DOM**
+line 413, line 435, line 461, line 517: changed the document.querySelector() and document.querySelectorAll() methods to document.getElementsById() or document.getElementsByClassName().
 
 - **Optimize for loops**
-
-All unnecessary code was moved outside of the loops.
-
-- **Save layout time with `translateX`**
-
-`translateX` achieves the same result as `left` but triggers only the composite process.
+line 462: moved dx,offsetWith, newwidth out of the loop.
+line 519: moved document.body.scrollTop out of the loop.
+line 544:Reduce the loop maximum number from 200 times to current viewport size.
 
 

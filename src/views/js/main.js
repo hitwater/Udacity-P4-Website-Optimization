@@ -8,10 +8,10 @@ you spot and fix both?
 There are two major issues in this code that lead to sub-60fps performance.
 Another issue is about layout that affects the browser performance.
 
-Issue 1: line 460
-Issue 2: line 517
-Issue 3: line 523
-Issue 4: line 545
+Optimization 1: line 413, line 435, line 461, line 517
+Optimization 2: line 462
+Optimization 3: line 519
+Optimization 4: line 544
 
 Built into the code, you'll find a few instances of the User Timing API
 (window.performance), which will be console.log()ing frame rate data into the
@@ -410,16 +410,17 @@ var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
   // Changes the value for the size of the pizza above the slider
+  // Optimization 1: change from document.querySelector() to document.getElementsById()
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -431,10 +432,10 @@ var resizePizzas = function(size) {
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
+  // Optimization 1:change from document.querySelector() to document.getElementsById()
+    var windowWidth = document.getElementById("randomPizzas").offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
-    // Optional TODO: change to 3 sizes? no more xl?
     // Changes the slider value to a percent width
     function sizeSwitcher (size) {
       switch(size) {
@@ -457,14 +458,15 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-// Optimization 1: moved dx and offsetWith out of the loop
-    var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
-    var offsetWidth = document.querySelector(".randomPizzaContainer").offsetWidth;
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+  // Optimization 1:change from document.querySelector() to document.getElementsByClassName()
+  // Optimization 2: moved dx,offsetWith, newwidth out of the loop
+    var dx = determineDx(document.getElementsByClassName("randomPizzaContainer"), size);
+    var offsetWidth = document.getElementsByClassName("randomPizzaContainer").offsetWidth;
+    var newwidth = (offsetWidth + dx) + 'px';
+    for (var i = 0; i < document.getElementsByClassName("randomPizzaContainer").length; i++) {
 //    var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
 //    var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      var newwidth = (offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+      document.document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
     }
   }
 
@@ -512,17 +514,14 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
-  var items = document.querySelectorAll('.mover');
-// Optimization 2: moved document.body.scrollTop out of the loop
+// Optimization 1:change from document.querySelector() to document.getElementsByClassName()
+  var items = document.getElementsByClassName('mover');
+// Optimization 3: moved document.body.scrollTop out of the loop
 // save the scrollTop value to a var to avoid calculating the value in the loop
   var scrollTop = document.body.scrollTop;
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((scrollTop  / 1250) + (i % 5));
-
-// Optimization 3:Instead of updating left property of each element, use translateX.
-//  items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-    items[i].style.transform = 'translateX(' + 100 * phase + 'px)'
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
